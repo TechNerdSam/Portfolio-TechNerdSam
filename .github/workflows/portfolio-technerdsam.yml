@@ -1,0 +1,59 @@
+# Nom du workflow qui apparaîtra dans l'onglet "Actions" de GitHub
+name: Déploiement sur GitHub Pages
+
+# Déclencheurs : quand lancer ce workflow ?
+on:
+  # Se lance à chaque 'push' sur la branche 'main'
+  push:
+    branches: ["main"]
+  # Permet de lancer manuellement ce workflow depuis l'interface de GitHub
+  workflow_dispatch:
+
+# Permissions : Accès que le workflow doit avoir sur le dépôt
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Jobs : Les tâches à exécuter
+jobs:
+  # Job de construction (build)
+  build:
+    runs-on: ubuntu-latest # Utilise une machine virtuelle Ubuntu
+    steps:
+      # 1. Récupère le code de votre dépôt
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      # 2. Configure GitHub Pages
+      - name: Configuration de GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      # 3. Construit le site (cette étape détecte automatiquement si c'est un projet Jekyll)
+      # Si ce n'est pas un projet Jekyll, elle préparera simplement les fichiers statiques.
+      - name: Construction avec Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./ # Le dossier source est la racine du projet
+          destination: ./_site # Le site construit sera placé dans le dossier '_site'
+
+      # 4. Uploade l'artefact (le site construit) pour que le job de déploiement puisse l'utiliser
+      - name: Upload de l'artefact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site # Uploade le contenu du dossier '_site'
+
+  # Job de déploiement (deploy)
+  deploy:
+    # Ce job ne se lance qu'après la fin réussie du job 'build'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }} # URL du site déployé
+    steps:
+      # Déploie l'artefact uploadé sur GitHub Pages
+      - name: Déploiement sur GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
