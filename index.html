@@ -1,193 +1,298 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samyn-Antoy ABASSE | Portfolio 3D Interactif</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <title>Samyn-Antoy ABASSE | Portfolio Interactif 2.0</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Polices Google Fonts (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Styles personnalisés et configuration de Tailwind -->
+    <style>
+        :root {
+            --c-primary: #a855f7; /* Violet (purple-500) */
+            --c-secondary: #3b82f6; /* Bleu (blue-500) */
+            --c-dark: #0f172a; /* (slate-900) */
+            --c-light: #f1f5f9; /* (slate-100) */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--c-dark);
+            color: var(--c-light);
+            overflow-x: hidden;
+        }
+
+        /* Conteneur pour la scène 3D */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* Effet de verre (Glassmorphism) */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6); /* slate-900 avec opacité */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Dégradé pour les titres */
+        .text-gradient {
+            background: linear-gradient(90deg, var(--c-primary), var(--c-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Configuration de Tailwind (pour les polices) */
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: 'var(--c-primary)',
+                        secondary: 'var(--c-secondary)',
+                        dark: 'var(--c-dark)',
+                        light: 'var(--c-light)',
+                    }
+                }
+            }
+        };
+
+        /* Styles pour les animations GSAP (éléments cachés au départ) */
+        .gsap-reveal {
+            opacity: 0;
+            transform: translateY(60px);
+        }
+    </style>
 </head>
-<body>
+<body class="antialiased">
+
+    <!-- Scène 3D Three.js -->
     <div id="canvas-container"></div>
 
-    <div class="content-wrapper">
-        <header class="main-header">
-            <div class="logo">S.A</div>
-            <nav class="main-nav">
-                <a href="#hero">Accueil</a>
-                <a href="#about">À Propos</a>
-                <a href="#skills">Compétences</a>
-                <a href="#projects">Projets</a>
-                <a href="#contact">Contact</a>
+    <!-- Conteneur principal -->
+    <div class="relative z-10 max-w-6xl px-4 mx-auto">
+
+        <!-- HEADER & NAVIGATION -->
+        <header id="header" class="fixed top-0 left-0 right-0 z-50">
+            <nav class="flex items-center justify-between max-w-6xl px-6 py-4 mx-auto mt-4 rounded-full glass-card">
+                <div class="text-2xl font-bold text-white">
+                    S.A
+                </div>
+                <div class="hidden space-x-6 md:flex">
+                    <a href="#hero" class="text-sm font-medium transition-colors text-slate-300 hover:text-white">Accueil</a>
+                    <a href="#about" class="text-sm font-medium transition-colors text-slate-300 hover:text-white">À Propos</a>
+                    <a href="#skills" class="text-sm font-medium transition-colors text-slate-300 hover:text-white">Compétences</a>
+                    <a href="#projects" class="text-sm font-medium transition-colors text-slate-300 hover:text-white">Projets</a>
+                    <a href="#contact" class="text-sm font-medium transition-colors text-slate-300 hover:text-white">Contact</a>
+                </div>
+                <a href="#contact" class="hidden px-5 py-2 text-sm font-semibold text-white transition-all rounded-full md:block bg-secondary hover:bg-blue-400 hover:shadow-lg hover:shadow-blue-500/30">
+                    Contactez-moi
+                </a>
             </nav>
         </header>
 
-        <main>
-            <section id="hero" class="hero-section">
-                <div class="hero-content">
-                    <h1 class="hero-title">Samyn-Antoy ABASSE</h1>
-                    <p class="hero-subtitle">Ingénieur Prompt & Développeur créatif</p>
-                    <p class="hero-description">Je transforme les idées complexes en expériences numériques immersives et solutions logicielles élégantes.</p>
-                    <a href="#projects" class="cta-button">Découvrir mes projets</a>
-                </div>
-            </section>
+        <main class="pt-32">
 
-            <section id="about" class="about-section content-card">
-                <h2>À Propos de Moi</h2>
-                <div class="about-content">
-                    <p>Passionné par le dialogue avec l'intelligence artificielle et son potentiel, je suis un ingénieur prompt autodidacte. Ma compétence repose sur des milliers d'heures d'expérimentation et une compréhension intuitive des modèles de langage. Je me spécialise dans la formulation d'instructions précises pour générer du code, créer des contenus complexes et résoudre des problèmes de manière innovante.</p>
-                    <ul>
-                        <li><span class="highlight">Spécialités :</span> Développement Full-Stack, Logiciels, Scripts, IA.</li>
-                        <li><span class="highlight">Mission :</span> Concevoir des solutions élégantes, évolutives et sécurisées.</li>
-                        <li><span class="highlight">Localisation :</span> Mayotte, Océan Indien.</li>
-                    </ul>
-                </div>
-            </section>
-
-            <section id="skills" class="skills-section">
-                <h2>Ma Boîte à Outils Technologique</h2>
-                <div class="skills-grid">
-                    <div class="skill-card">
-                        <div class="skill-icon">🚀</div>
-                        <h3>Frontend</h3>
-                        <p>HTML, CSS, Sass, JavaScript, React.js, GSAP (GreenSock), JSX</p>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon">⚙️</div>
-                        <h3>Backend</h3>
-                        <p>Java, Jakarta EE, Spring Boot, SQL & NoSQL, WAMP/MAMP/LAMP</p>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon">🛡️</div>
-                        <h3>API & Sécurité</h3>
-                        <p>RESTful API, GraphQL, Spring Security, OAuth2, JWT</p>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon">🛠️</div>
-                        <h3>Outils & DevOps</h3>
-                        <p>Git, GitHub, Docker, Maven, Gradle, Glassfish, Agile (Scrum/Kaban)</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="projects" class="projects-section">
-                <h2>Mes Projets</h2>
-                <p class="projects-intro">
-                    Une sélection de projets qui démontrent ma passion pour la création de solutions robustes
-                    et d'expériences utilisateur engageantes, allant du backend Java au frontend interactif.
+            <!-- SECTION HÉROS -->
+            <section id="hero" class="flex flex-col items-center justify-center min-h-[80vh] text-center">
+                <h1 class="text-5xl font-extrabold tracking-tighter text-white md:text-7xl lg:text-8xl gsap-reveal">
+                    Samyn-Antoy ABASSE
+                </h1>
+                <p class="mt-4 text-2xl font-medium md:text-3xl lg:text-4xl text-gradient gsap-reveal" style="--delay: 0.2s;">
+                    Ingénieur Prompt & Développeur créatif
                 </p>
-                <div class="projects-grid-elite">
+                <p class="max-w-2xl mt-6 text-lg text-slate-300 md:text-xl gsap-reveal" style="--delay: 0.4s;">
+                    Je transforme les idées complexes en expériences numériques immersives et solutions logicielles élégantes.
+                </p>
+                <a href="#projects" class="px-8 py-3 mt-10 text-lg font-semibold text-white transition-all rounded-full gsap-reveal bg-primary hover:bg-purple-400 hover:shadow-lg hover:shadow-purple-500/30 hover:scale-105" style="--delay: 0.6s;">
+                    Découvrir mes projets
+                </a>
+            </section>
 
-                    <div class="project-card-elite large">
-                        <div class="project-image-container">
-                            <svg class="project-placeholder-img" width="100%" height="100%" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" rx="10" fill="#1A192B"/><text x="50%" y="45%" fill="#8e44ad" font-family="Poppins, sans-serif" font-size="24" font-weight="bold" text-anchor="middle">Horloge Futuriste</text><text x="50%" y="60%" fill="#ecf0f1" font-family="Poppins, sans-serif" font-size="14" text-anchor="middle">Java, Swing, AWT</text></svg>
-                        </div>
-                        <div class="project-content-elite">
-                            <h3 class="project-title-elite">Application Horloge Futuriste</h3>
-                            <p class="project-description-elite">Une application de bureau Java (Swing) avec alarmes, chronomètre, et design futuriste personnalisable.</p>
-                            <div class="project-tags">
-                                <span>Java 8+</span>
-                                <span>Swing</span>
-                                <span>AWT</span>
-                                <span>Desktop</span>
-                            </div>
-                            <div class="project-links-elite">
-                                <a href="https://github.com/TechNerdSam/HorlogeNumerique" target="_blank" rel="noopener noreferrer">Voir le Code</a>
-                            </div>
+            <!-- SECTION À PROPOS -->
+            <section id="about" class="py-20 md:py-32">
+                <div class="grid items-center gap-12 md:grid-cols-2">
+                    <div class="gsap-reveal">
+                        <h2 class="text-4xl font-bold tracking-tighter text-white md:text-5xl">À Propos de Moi</h2>
+                        <div class="mt-6 space-y-4 text-lg text-slate-300">
+                            <p>Passionné par le dialogue avec l'intelligence artificielle et son potentiel, je suis un ingénieur prompt autodidacte. Ma compétence repose sur des milliers d'heures d'expérimentation et une compréhension intuitive des modèles de langage.</p>
+                            <p>Je me spécialise dans la formulation d'instructions précises pour générer du code, créer des contenus complexes et résoudre des problèmes de manière innovante.</p>
                         </div>
                     </div>
-
-                    <div class="project-card-elite">
-                        <div class="project-content-elite">
-                            <span class="project-type">API & Service Web</span>
-                            <h3 class="project-title-elite">Raccourcisseur d'URL</h3>
-                            <p class="project-description-elite">Service back-end complet avec Spring Boot pour créer et gérer des URL courtes via une API RESTful et une interface simple.</p>
-                            <div class="project-tags">
-                                <span>Spring Boot</span>
-                                <span>Java 17</span>
-                                <span>JPA</span>
-                                <span>H2</span>
-                                <span>GSAP</span>
-                            </div>
-                            <div class="project-links-elite">
-                                <a href="https://github.com/TechNerdSam/urlshortener" target="_blank" rel="noopener noreferrer">Voir le Code</a>
-                            </div>
-                        </div>
+                    <div class="p-8 rounded-2xl glass-card gsap-reveal" style="--delay: 0.3s;">
+                        <ul class="space-y-4 text-lg">
+                            <li class="flex items-start">
+                                <span class="pr-3 text-2xl text-secondary">🚀</span>
+                                <div><span class="font-semibold text-white">Spécialités :</span> Développement Full-Stack, Logiciels, Scripts, IA.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="pr-3 text-2xl text-primary">🎯</span>
+                                <div><span class="font-semibold text-white">Mission :</span> Concevoir des solutions élégantes, évolutives et sécurisées.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="pr-3 text-2xl text-secondary">📍</span>
+                                <div><span class="font-semibold text-white">Localisation :</span> Mayotte, Océan Indien.</div>
+                            </li>
+                        </ul>
                     </div>
+                </div>
+            </section>
 
-                    <div class="project-card-elite">
-                        <div class="project-content-elite">
-                            <span class="project-type">Application Web</span>
-                            <h3 class="project-title-elite">Landing Page "ApexSolutions"</h3>
-                            <p class="project-description-elite">Landing page dynamique pour une entreprise, servie par Spring Boot avec un moteur de template Thymeleaf.</p>
-                            <div class="project-tags">
-                                <span>Spring Boot</span>
-                                <span>Thymeleaf</span>
-                                <span>Java 17</span>
-                                <span>MVC</span>
-                            </div>
-                            <div class="project-links-elite">
-                                <a href="https://github.com/TechNerdSam/ApexSolutions" target="_blank" rel="noopener noreferrer">Voir le Code</a>
-                            </div>
-                        </div>
+            <!-- SECTION COMPÉTENCES (BENTO GRID) -->
+            <section id="skills" class="py-20 md:py-32">
+                <h2 class="mb-12 text-4xl font-bold tracking-tighter text-center text-white md:text-5xl gsap-reveal">Ma Boîte à Outils Technologique</h2>
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
+                    <!-- Frontend -->
+                    <div class="p-8 transition-all duration-300 transform md:col-span-2 rounded-2xl glass-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1 gsap-reveal">
+                        <div class="mb-4 text-4xl">🚀</div>
+                        <h3 class="mb-2 text-2xl font-semibold text-white">Frontend</h3>
+                        <p class="text-slate-300">HTML, CSS, Sass, JavaScript, React.js, GSAP (GreenSock), JSX, Tailwind CSS</p>
                     </div>
+                    <!-- Backend -->
+                    <div class="p-8 transition-all duration-300 transform lg:col-span-2 md:col-span-1 rounded-2xl glass-card hover:border-secondary/50 hover:shadow-2xl hover:shadow-secondary/20 hover:-translate-y-1 gsap-reveal" style="--delay: 0.1s;">
+                        <div class="mb-4 text-4xl">⚙️</div>
+                        <h3 class="mb-2 text-2xl font-semibold text-white">Backend</h3>
+                        <p class="text-slate-300">Java, Jakarta EE, Spring Boot, SQL & NoSQL, WAMP/MAMP/LAMP</p>
+                    </div>
+                    <!-- API & Sécurité -->
+                    <div class="p-8 transition-all duration-300 transform lg:col-span-2 md:col-span-1 rounded-2xl glass-card hover:border-secondary/50 hover:shadow-2xl hover:shadow-secondary/20 hover:-translate-y-1 gsap-reveal" style="--delay: 0.2s;">
+                        <div class="mb-4 text-4xl">🛡️</div>
+                        <h3 class="mb-2 text-2xl font-semibold text-white">API & Sécurité</h3>
+                        <p class="text-slate-300">RESTful API, GraphQL, Spring Security, OAuth2, JWT</p>
+                    </div>
+                    <!-- Outils & DevOps -->
+                    <div class="p-8 transition-all duration-300 transform md:col-span-2 rounded-2xl glass-card hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1 gsap-reveal" style="--delay: 0.3s;">
+                        <div class="mb-4 text-4xl">🛠️</div>
+                        <h3 class="mb-2 text-2xl font-semibold text-white">Outils & DevOps</h3>
+                        <p class="text-slate-300">Git, GitHub, Docker, Maven, Gradle, Glassfish, Agile (Scrum/Kaban)</p>
+                    </div>
+                </div>
+            </section>
 
-                    <div class="project-card-elite large">
-                        <div class="project-image-container">
-                             <svg class="project-placeholder-img" width="100%" height="100%" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" rx="10" fill="#1A192B"/><text x="50%" y="45%" fill="#3498db" font-family="Poppins, sans-serif" font-size="24" font-weight="bold" text-anchor="middle">CV Interactif</text><text x="50%" y="60%" fill="#ecf0f1" font-family="Poppins, sans-serif" font-size="14" text-anchor="middle">Tailwind CSS, Vanilla JS</text></svg>
-                        </div>
-                        <div class="project-content-elite">
-                            <h3 class="project-title-elite">CV Interactif (Bento Grid)</h3>
-                            <p class="project-description-elite">Mon CV personnel en ligne, conçu avec un design "Bento Grid" moderne, des effets interactifs et une esthétique épurée.</p>
-                            <div class="project-tags">
-                                <span>HTML5</span>
-                                <span>Tailwind CSS</span>
-                                <span>JavaScript</span>
-                                <span>AOS</span>
-                            </div>
-                            <div class="project-links-elite">
-                                <a href="https://github.com/TechNerdSam/monCV-en-ligne" target="_blank" rel="noopener noreferrer">Voir le Code</a>
-                                <a href="https://technerdsam.github.io/monCV-en-ligne/" target="_blank" rel="noopener noreferrer" class="link-secondary">Voir le Site</a>
-                            </div>
-                        </div>
-                    </div>
+            <!-- SECTION PROJETS (BENTO GRID AMÉLIORÉE) -->
+            <section id="projects" class="py-20 md:py-32">
+                <h2 class="mb-4 text-4xl font-bold tracking-tighter text-center text-white md:text-5xl gsap-reveal">Mes Projets</h2>
+                <p class="max-w-3xl mx-auto mb-12 text-lg text-center text-slate-300 md:text-xl gsap-reveal" style="--delay: 0.1s;">
+                    Une sélection de projets qui démontrent ma passion pour la création de solutions robustes et d'expériences utilisateur engageantes.
+                </p>
+
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 md:grid-cols-2">
                     
-                    <div class="project-card-elite">
-                        <div class="project-content-elite">
-                            <span class="project-type">Frontend & IA</span>
-                            <h3 class="project-title-elite">Guide des Rêves en Islam</h3>
-                            <p class="project-description-elite">Un guide interactif avec dictionnaire de symboles et un interprète personnel alimenté par l'IA (Google Gemini).</p>
-                            <div class="project-tags">
-                                <span>HTML5</span>
-                                <span>Tailwind CSS</span>
-                                <span>Google Gemini</span>
-                                <span>Jekyll</span>
+                    <!-- Projet 1: Horloge Futuriste (Large) -->
+                    <div class="flex flex-col overflow-hidden transition-all duration-300 transform rounded-2xl glass-card project-card lg:col-span-2 hover:shadow-2xl hover:shadow-primary/20 gsap-reveal" style="--delay: 0.2s;">
+                        <div class="overflow-hidden h-60 md:h-80">
+                            <img src="https://placehold.co/800x400/0f172a/a855f7?text=Horloge+Futuriste&font=inter" alt="Placeholder Horloge Futuriste" class="object-cover w-full h-full transition-transform duration-500 ease-in-out hover:scale-105">
+                        </div>
+                        <div class="flex flex-col flex-grow p-6 md:p-8">
+                            <h3 class="mb-2 text-2xl font-semibold text-white">Application Horloge Futuriste</h3>
+                            <p class="mb-4 text-slate-300">Une application de bureau Java (Swing) avec alarmes, chronomètre, et design futuriste personnalisable.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto mb-4">
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary">Java 8+</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary">Swing</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary">AWT</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary">Desktop</span>
                             </div>
-                            <div class="project-links-elite">
-                                <a href="https://github.com/TechNerdSam/laughing-broccoli" target="_blank" rel="noopener noreferrer">Voir le Code</a>
-                                <a href="https://technerdsam.github.io/laughing-broccoli/" target="_blank" rel="noopener noreferrer" class="link-secondary">Voir le Site</a>
+                            <a href="https://github.com/TechNerdSam/HorlogeNumerique" target="_blank" rel="noopener noreferrer" class="self-start text-sm font-semibold transition-colors text-secondary hover:text-blue-400">Voir le Code &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- Projet 2: Raccourcisseur d'URL -->
+                    <div class="flex flex-col overflow-hidden transition-all duration-300 transform rounded-2xl glass-card project-card hover:shadow-2xl hover:shadow-secondary/20 gsap-reveal" style="--delay: 0.3s;">
+                        <div class="flex flex-col flex-grow p-6 md:p-8">
+                            <span class="mb-2 text-sm font-semibold text-secondary">API & Service Web</span>
+                            <h3 class="mb-2 text-2xl font-semibold text-white">Raccourcisseur d'URL</h3>
+                            <p class="mb-4 text-slate-300">Service back-end complet avec Spring Boot pour créer et gérer des URL courtes.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto mb-4">
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-secondary/20 text-secondary">Spring Boot</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-secondary/20 text-secondary">Java 17</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-secondary/20 text-secondary">JPA</span>
+                            </div>
+                            <a href="https://github.com/TechNerdSam/urlshortener" target="_blank" rel="noopener noreferrer" class="self-start text-sm font-semibold transition-colors text-secondary hover:text-blue-400">Voir le Code &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- Projet 3: Landing Page "ApexSolutions" -->
+                    <div class="flex flex-col overflow-hidden transition-all duration-300 transform rounded-2xl glass-card project-card hover:shadow-2xl hover:shadow-secondary/20 gsap-reveal" style="--delay: 0.2s;">
+                        <div class="flex flex-col flex-grow p-6 md:p-8">
+                            <span class="mb-2 text-sm font-semibold text-secondary">Application Web</span>
+                            <h3 class="mb-2 text-2xl font-semibold text-white">Landing Page "ApexSolutions"</h3>
+                            <p class="mb-4 text-slate-300">Landing page dynamique pour une entreprise, servie par Spring Boot avec Thymeleaf.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto mb-4">
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-secondary/20 text-secondary">Spring Boot</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-secondary/20 text-secondary">Thymeleaf</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-secondary/20 text-secondary">MVC</span>
+                            </div>
+                            <a href="https://github.com/TechNerdSam/ApexSolutions" target="_blank" rel="noopener noreferrer" class="self-start text-sm font-semibold transition-colors text-secondary hover:text-blue-400">Voir le Code &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- Projet 4: CV Interactif (Large) -->
+                    <div class="flex flex-col overflow-hidden transition-all duration-300 transform rounded-2xl glass-card project-card lg:col-span-2 hover:shadow-2xl hover:shadow-primary/20 gsap-reveal" style="--delay: 0.3s;">
+                        <div class="overflow-hidden h-60 md:h-80">
+                            <img src="https://placehold.co/800x400/0f172a/3b82f6?text=CV+Interactif+(Bento)&font=inter" alt="Placeholder CV Interactif" class="object-cover w-full h-full transition-transform duration-500 ease-in-out hover:scale-105">
+                        </div>
+                        <div class="flex flex-col flex-grow p-6 md:p-8">
+                            <h3 class="mb-2 text-2xl font-semibold text-white">CV Interactif (Bento Grid)</h3>
+                            <p class="mb-4 text-slate-300">Mon CV personnel en ligne, conçu avec un design "Bento Grid" moderne, des effets interactifs et une esthétique épurée.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto mb-4">
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary">HTML5</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary">Tailwind CSS</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary">JavaScript</span>
+                            </div>
+                            <div class="flex space-x-4">
+                                <a href="https://github.com/TechNerdSam/monCV-en-ligne" target="_blank" rel="noopener noreferrer" class="self-start text-sm font-semibold transition-colors text-secondary hover:text-blue-400">Voir le Code &rarr;</a>
+                                <a href="https://technerdsam.github.io/monCV-en-ligne/" target="_blank" rel="noopener noreferrer" class="self-start text-sm font-semibold transition-colors text-secondary hover:text-blue-400">Voir le Site &rarr;</a>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="project-card-elite">
-                        <div class="project-content-elite">
-                            <span class="project-type">Rapport & Analyse Technique</span>
-                            <h3 class="project-title-elite">Rapport Full-Stack Java 2025</h3>
-                            <p class="project-description-elite">Analyse détaillée et stratégique des opportunités et des défis de la spécialisation Full-Stack dans l'écosystème Java moderne. Présenté sous forme de page web interactive.</p>
-                            <div class="project-tags">
-                                <span>HTML5</span>
-                                <span>CSS3</span>
-                                <span>JavaScript</span>
-                                <span>Analyse</span>
-                                <span>Veille Technologique</span>
+
+                    <!-- Projet 5: Guide des Rêves -->
+                    <div class="flex flex-col overflow-hidden transition-all duration-300 transform rounded-2xl glass-card project-card hover:shadow-2xl hover:shadow-secondary/20 gsap-reveal" style="--delay: 0.2s;">
+                        <div class="flex flex-col flex-grow p-6 md:p-8">
+                            <span class="mb-2 text-sm font-semibold text-secondary">Frontend & IA</span>
+                            <h3 class="mb-2 text-2xl font-semibold text-white">Guide des Rêves en Islam</h3>
+                            <p class="mb-4 text-slate-300">Un guide interactif avec dictionnaire et un interprète personnel alimenté par l'IA (Google Gemini).</p>
+                            <div class="flex flex-wrap gap-2 mt-auto mb-4">
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-secondary/20 text-secondary">HTML5</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-secondary/20 text-secondary">Tailwind CSS</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-secondary/20 text-secondary">Google Gemini</span>
                             </div>
-                            <div class="project-links-elite">
-                                <a href="https://github.com/TechNerdSam/rapports-full-stack-2025" target="_blank" rel="noopener noreferrer">Voir le Code</a>
-                                <a href="https://technerdsam.github.io/rapports-full-stack-2025/" target="_blank" rel="noopener noreferrer" class="link-secondary">Consulter le Rapport</a>
+                            <div class="flex space-x-4">
+                                <a href="https://github.com/TechNerdSam/laughing-broccoli" target="_blank" rel="noopener noreferrer" class="self-start text-sm font-semibold transition-colors text-secondary hover:text-blue-400">Voir le Code &rarr;</a>
+                                <a href="https://technerdsam.github.io/laughing-broccoli/" target="_blank" rel="noopener noreferrer" class="self-start text-sm font-semibold transition-colors text-secondary hover:text-blue-400">Voir le Site &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Projet 6: Rapport Full-Stack -->
+                    <div class="flex flex-col overflow-hidden transition-all duration-300 transform rounded-2xl glass-card project-card hover:shadow-2xl hover:shadow-primary/20 gsap-reveal" style="--delay: 0.3s;">
+                        <div class="flex flex-col flex-grow p-6 md:p-8">
+                            <span class="mb-2 text-sm font-semibold text-primary">Rapport & Analyse</span>
+                            <h3 class="mb-2 text-2xl font-semibold text-white">Rapport Full-Stack Java 2025</h3>
+                            <p class="mb-4 text-slate-300">Analyse détaillée des opportunités et des défis de la spécialisation Full-Stack dans l'écosystème Java moderne.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto mb-4">
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary">HTML5</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary">CSS3</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary">Analyse</span>
+                            </div>
+                            <div class="flex space-x-4">
+                                <a href="https://github.com/TechNerdSam/rapports-full-stack-2025" target="_blank" rel="noopener noreferrer" class="self-start text-sm font-semibold transition-colors text-secondary hover:text-blue-400">Voir le Code &rarr;</a>
+                                <a href="https://technerdsam.github.io/rapports-full-stack-2025/" target="_blank" rel="noopener noreferrer" class="self-start text-sm font-semibold transition-colors text-secondary hover:text-blue-400">Consulter le Rapport &rarr;</a>
                             </div>
                         </div>
                     </div>
@@ -195,26 +300,177 @@
                 </div>
             </section>
 
-            <section id="contact" class="contact-section content-card">
-                <h2>Entrons en Contact</h2>
-                <p>Une question, une proposition de projet, ou simplement envie de discuter ? N'hésitez pas à m'envoyer un message. Je suis toujours ouvert à de nouvelles opportunités et collaborations.</p>
-                <a href="mailto:samynantoy@gmail.com" class="cta-button">Envoyer un e-mail</a>
-                <div class="social-links">
-                    <a href="https://github.com/TechNerdSam" target="_blank" title="Profil GitHub" rel="noopener noreferrer">GitHub</a>
-                    <a href="https://www.linkedin.com/in/samyn-antoy-abasse-438746171/" target="_blank" title="Profil LinkedIn" rel="noopener noreferrer">LinkedIn</a>
+            <!-- SECTION CONTACT -->
+            <section id="contact" class="py-20 md:py-32">
+                <div class="max-w-3xl p-8 mx-auto text-center md:p-12 rounded-2xl glass-card gsap-reveal">
+                    <h2 class="text-4xl font-bold tracking-tighter text-white md:text-5xl">Entrons en Contact</h2>
+                    <p class="max-w-xl mx-auto mt-4 text-lg text-slate-300">
+                        Une question, une proposition de projet, ou simplement envie de discuter ? N'hésitez pas. Je suis toujours ouvert à de nouvelles opportunités et collaborations.
+                    </p>
+                    <a href="mailto:samynantoy@gmail.com" class="inline-block px-8 py-3 mt-10 text-lg font-semibold text-white transition-all rounded-full bg-primary hover:bg-purple-400 hover:shadow-lg hover:shadow-purple-500/30 hover:scale-105">
+                        Envoyer un e-mail
+                    </a>
+                    <div class="flex items-center justify-center mt-10 space-x-6">
+                        <a href="https://github.com/TechNerdSam" target="_blank" rel="noopener noreferrer" class="font-medium transition-colors text-slate-300 hover:text-white">GitHub</a>
+                        <span class="text-slate-500">/</span>
+                        <a href="https://www.linkedin.com/in/samyn-antoy-abasse-438746171/" target="_blank" rel="noopener noreferrer" class="font-medium transition-colors text-slate-300 hover:text-white">LinkedIn</a>
+                    </div>
                 </div>
             </section>
         </main>
 
-        <footer class="main-footer">
-            <p>&copy; 2025 Samyn-Antoy ABASSE. Design & Développement avec passion.</p>
+        <!-- FOOTER -->
+        <footer class="py-12 text-center border-t border-white/10">
+            <p class="text-slate-400">&copy; 2025 Samyn-Antoy ABASSE. Design & Développement avec passion.</p>
         </footer>
+
     </div>
 
+    <!-- Bibliothèques JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
-    
-    <script src="js/main.js"></script>
+
+    <!-- Script principal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // ----------------------------------------
+            // SCÈNE 3D AVEC THREE.JS (Simplifiée)
+            // ----------------------------------------
+            const container = document.getElementById('canvas-container');
+            if (container) {
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                container.appendChild(renderer.domElement);
+
+                const starGeometry = new THREE.BufferGeometry();
+                const starCount = 6000;
+                const posArray = new Float32Array(starCount * 3);
+                const colors = new Float32Array(starCount * 3);
+                const colorPrimary = new THREE.Color(0xa855f7); // --c-primary
+                const colorSecondary = new THREE.Color(0x3b82f6); // --c-secondary
+
+                for (let i = 0; i < starCount * 3; i++) {
+                    posArray[i] = (Math.random() - 0.5) * 100;
+                    
+                    const color = Math.random() > 0.5 ? colorPrimary : colorSecondary;
+                    colors[i * 3 + 0] = color.r;
+                    colors[i * 3 + 1] = color.g;
+                    colors[i * 3 + 2] = color.b;
+                }
+                starGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+                starGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                
+                const starMaterial = new THREE.PointsMaterial({
+                    size: 0.05,
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const starMesh = new THREE.Points(starGeometry, starMaterial);
+                scene.add(starMesh);
+
+                camera.position.z = 5;
+
+                let mouseX = 0;
+                let mouseY = 0;
+                document.addEventListener('mousemove', (event) => {
+                    mouseX = event.clientX;
+                    mouseY = event.clientY;
+                });
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    starMesh.rotation.y += 0.0001;
+                    starMesh.rotation.x += 0.0001;
+
+                    if (mouseX > 0) {
+                        camera.position.x += ((mouseX - window.innerWidth / 2) / window.innerWidth * 2 - camera.position.x) * 0.01;
+                        camera.position.y += (-(mouseY - window.innerHeight / 2) / window.innerHeight * 2 - camera.position.y) * 0.01;
+                    }
+                    camera.lookAt(scene.position);
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                window.addEventListener('resize', () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+            }
+
+            // ----------------------------------------
+            // ANIMATIONS AVEC GSAP & SCROLLTRIGGER
+            // ----------------------------------------
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Animation d'apparition générale
+            const cards = document.querySelectorAll(".gsap-reveal");
+            cards.forEach(card => {
+                const delay = parseFloat(card.style.getPropertyValue("--delay")) || 0;
+                
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 90%",
+                        toggleActions: "play none none none"
+                    },
+                    opacity: 0,
+                    y: 60,
+                    duration: 1,
+                    delay: delay,
+                    ease: 'power3.out'
+                });
+            });
+            
+            // Animation de la barre de navigation
+            gsap.from("#header", {
+                y: -100,
+                opacity: 0,
+                duration: 1,
+                delay: 1,
+                ease: 'power3.out'
+            });
+
+            // ----------------------------------------
+            // EFFET 3D SUR LES CARTES DE PROJET
+            // ----------------------------------------
+            const projectCards = document.querySelectorAll('.project-card');
+            projectCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -5; // Angle réduit
+                    const rotateY = ((x - centerX) / centerX) * 5;
+
+                    gsap.to(card, {
+                        duration: 0.7,
+                        rotationX: rotateX,
+                        rotationY: rotateY,
+                        scale: 1.03,
+                        transformPerspective: 1000,
+                        ease: 'power3.out'
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        duration: 0.7,
+                        rotationX: 0,
+                        rotationY: 0,
+                        scale: 1.0,
+                        ease: 'power3.out'
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
